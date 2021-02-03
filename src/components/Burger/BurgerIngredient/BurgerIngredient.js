@@ -28,7 +28,7 @@ class BurgerIngredient extends Component {
             case ('salad'):
                 ingredient = <div className={classes.Salad}></div>;
                 break;
-            case ('Bacon'):
+            case ('bacon'):
                 ingredient = <div className={classes.Bacon}></div>;
                 break;
             default:
@@ -39,7 +39,7 @@ class BurgerIngredient extends Component {
     }
 }
 
-BurgerIngredient.PropTypes = {                  // Prop type validation.
+BurgerIngredient.propTypes = {                  // Prop type validation.
     type: PropTypes.string.isRequired
 }
 

@@ -5,10 +5,13 @@ import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const burger = (props) => {
 
-    const transformedIngredients = Object.keys(props.ingredients)       // Very complicated. But it's jsut JavaScript.
-        .map(igKey => {
-            return [...Array(props.ingredients[igKey])].map((_, i) => {
-                return <BurgerIngredient key={igKey + i} type={igKey} />;
+    // This basicaly does the following: It takes our array of ingredientes. Cycles through each Ingredient, and for each one it gets it's numeric value.
+    // Then after receiving the numeric value it creates a new BurgerIngredient, based on the Name and Value it extracted.
+    // 
+    const transformedIngredients = Object.keys(props.ingredients)       // Extracts keys from a object and turns it into an array. So it returns ['salad', 'bacon', 'cheese', 'meat'].                      
+        .map(ingredientName => {                                        // Map creates a new array. We execute a function for each ingredient.                        
+            return [...Array(props.ingredients[ingredientName])].map((_, i) => {    
+                return <BurgerIngredient key={ingredientName + i} type={ingredientName} />;
             });
         });
 

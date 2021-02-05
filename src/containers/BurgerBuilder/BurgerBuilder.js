@@ -24,7 +24,22 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        totalPrice: 4
+        totalPrice: 4,
+        purchaseable: false
+    }
+
+    updatePurchaseState(ingredients) {
+        /*  const ingredients = {
+             ...this.state.ingredients                                                   // State Update: Copy old state information into new array.
+         }; */
+        const sum = Object.keys(ingredients)                                            // Returns an array of Strings with the ingredient names. [salad, bacon, etc]
+            .map(ingredientName => {                                                    // This acts almost as a forEach loop.
+                return ingredients[ingredientName];                                     // This returns the number associated with each ingredient name.
+            })
+            .reduce((sum, el) => {                                                      // We use this to calculate the sum of all the numbers. Starts at 0.
+                return sum + el;
+            }, 0);
+        this.setState({ purchaseable: sum > 0 });                                       // Set purcahseable to true if there is at least one ingredient.
     }
 
     addIngredientHandler = (type) => {
@@ -40,6 +55,7 @@ class BurgerBuilder extends Component {
         const newPrice = prevPrice + priceAddition;                                     // New total price.
 
         this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });       // Finally, update the state with the new information.
+        this.updatePurchaseState(updatedIngredients);
     }
 
     removeIngredientHandler = (type) => {
@@ -58,6 +74,7 @@ class BurgerBuilder extends Component {
         const newPrice = prevPrice - priceDeduction;
 
         this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+        this.updatePurchaseState(updatedIngredients);
     }
 
     render() {
@@ -77,6 +94,7 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
+                    purchaseable={this.state.purchaseable}
                     price={this.state.totalPrice} />
             </Aux>
         );

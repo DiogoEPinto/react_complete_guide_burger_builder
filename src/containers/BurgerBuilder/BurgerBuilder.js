@@ -27,13 +27,15 @@ class BurgerBuilder extends Component {
             meat: 0
         },
         totalPrice: 4,
-        purchaseable: false
+        purchaseable: false,
+        purchasing: false
     }
 
     updatePurchaseState(ingredients) {
         /*  const ingredients = {
              ...this.state.ingredients                                                  // State Update: Copy old state information into new array.
          }; */
+
         const sum = Object.keys(ingredients)                                            // Returns an array of Strings with the ingredient names. [salad, bacon, etc]
             .map(ingredientName => {                                                    // This acts almost as a forEach loop.
                 return ingredients[ingredientName];                                     // This returns the number associated with each ingredient name.
@@ -60,7 +62,7 @@ class BurgerBuilder extends Component {
         this.updatePurchaseState(updatedIngredients);
     }
 
-    removeIngredientHandler = (type) => {
+    removeIngredientHandler = (type) => {                                               // Same logic as the addIngredientHandler.
         const prevIngredientCount = this.state.ingredients[type];
         if (prevIngredientCount <= 0) {                                                 // Don't remove ingredients if they don't exist.
             return;
@@ -79,6 +81,10 @@ class BurgerBuilder extends Component {
         this.updatePurchaseState(updatedIngredients);
     }
 
+    purchaseHandler = () => {                                                           // Because we use setState we must declare  this as an arrow function.
+        this.setState({ purchasing: true });
+    }
+
     render() {
         const disabledInfo = {
             ...this.state.ingredients
@@ -90,7 +96,7 @@ class BurgerBuilder extends Component {
 
         return (
             <Aux>
-                <Modal>
+                <Modal show={this.state.purchasing}>
                     <OrderSummary ingredients={this.state.ingredients} />
                 </Modal>
                 <Burger
@@ -100,6 +106,7 @@ class BurgerBuilder extends Component {
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
                     purchaseable={this.state.purchaseable}
+                    ordered={this.purchaseHandler}
                     price={this.state.totalPrice} />
             </Aux>
         );
